@@ -38,7 +38,7 @@ class KMean:
                 self.cluster[np.random.randint(0, len(self.cluster))].append(point)
         else:
             for point in self.X:
-                dist = [euclidean_dist(point, centroid) for centroid in self.centroids]
+                dist = [self.euclidean_dist(point, centroid) for centroid in self.centroids]
                 classified_index = dist.index(min(dist))
                 self.cluster[classified_index].append(point)
 
@@ -92,8 +92,8 @@ class KMean:
 
 
 def main():
-    k_mean = KMean(2)
-    k_mean.parse_data("heightWeight.csv", ',')
+    k_mean = KMean(3)
+    k_mean.parse_data("ipl.csv", ' ')
     k_mean.init_cluster_center("FORGY")
     k_mean.clusterify()
 
