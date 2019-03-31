@@ -32,16 +32,13 @@ class KMean:
             else:
                 self.centroids = new_centroid
 
-    def _classify_points_to_cluster(self):
+        def _classify_points_to_cluster(self):
         if len(self.centroids) == 0:  # RANDOM init centroid
             for point in self.X:
                 self.cluster[np.random.randint(0, len(self.cluster))].append(point)
-
-            for cluster in self.cluster:
-                self.centroids.append(np.mean(cluster))
         else:
             for point in self.X:
-                dist = [self.euclidean_dist(point, centroid) for centroid in self.centroids]
+                dist = [euclidean_dist(point, centroid) for centroid in self.centroids]
                 classified_index = dist.index(min(dist))
                 self.cluster[classified_index].append(point)
 
@@ -54,14 +51,17 @@ class KMean:
         return new_centroid
 
     def _has_converged(self, new_centroid):
-        for i, centroid in enumerate(self.centroids):
-            old_centroid = centroid
-            curr_centroid = new_centroid[i]
+        if len(self.centroids) == 0:
+            return False
+        else:
+            for i, centroid in enumerate(self.centroids):
+                old_centroid = centroid
+                curr_centroid = new_centroid[i]
 
-            if np.sum((curr_centroid - old_centroid) / old_centroid * 100.0) > self._tolerance:
-                return False
-            else:
-                return True
+                if np.sum((curr_centroid - old_centroid) / old_centroid * 100.0) > self._tolerance:
+                    return False
+                else:
+                    return True
 
     def _init_cluster_classes(self):
         self.cluster = []
